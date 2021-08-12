@@ -15,9 +15,6 @@ import time
 from datetime import datetime
 
 
-# This is a pretty simple script. The script downloads the homepage of VentureBeat, and if it finds some text, emails me.
-# If it does not find some text, it waits 60 seconds and downloads the homepage again.
-
 url="https://www.tcf.gov.tr/PILATES/KURS.html"
 
 # Make a GET request to fetch the raw HTML content
@@ -46,7 +43,7 @@ while True:
                 registration_link = os.path.join(base_url, x['href'])
                 _, tail = os.path.split(registration_link)
                 text = x.string
-                if '2. Kademe Pilates' in x.string and int(tail) > 1191:
+                if '1. Kademe Pilates' in x.string and int(tail) > 1191:
                     print(registration_link)
                     print(x.string)
                     send_telegram_message(registration_link, text)
