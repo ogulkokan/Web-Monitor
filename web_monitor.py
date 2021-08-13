@@ -29,12 +29,11 @@ announcement_list = soup.findAll('table', {'class': 'arama_tablosu'})
 # Create a window object
 window = tk.Tk()
 window.title('TGF - course tracking app')
-# window.iconbitmap('c:/gui/images/codemy.ico')
+window.iconbitmap('./assets/monitoring.ico')
 
 window.geometry('500x500')
 window.config(background = "grey")
 
-counter = 1
 
 def send_telegram_message(registration_link, text):
     """Sends message via Telegram"""
@@ -74,7 +73,7 @@ Button1 = tk.Button(window, text ="Start Monitoring", command = start_monitoring
 Button1.pack()
 
 textArea = tk.Text(window, width=60, height=20, background="yellow")
-textArea.grid(row=2, column=0)
+# textArea.grid(row=2, column=0)
 textArea.pack()
 
 scrollbar = tk.Scrollbar(window)
