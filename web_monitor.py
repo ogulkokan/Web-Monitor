@@ -13,6 +13,8 @@ import requests
 import os
 import time
 from datetime import datetime
+import tkinter as tk
+import tkinter.scrolledtext as tkst
 
 
 url="https://www.tcf.gov.tr/PILATES/KURS.html"
@@ -24,6 +26,15 @@ soup = BeautifulSoup(html_content, "lxml")
 base_url = "https://www.tcf.gov.tr/"
 announcement_list = soup.findAll('table', {'class': 'arama_tablosu'})
 
+# Create a window object
+window = tk.Tk()
+window.title('TGF - course tracking app')
+# window.iconbitmap('c:/gui/images/codemy.ico')
+
+window.geometry('500x500')
+window.config(background = "grey")
+
+counter = 1
 
 def send_telegram_message(registration_link, text):
     """Sends message via Telegram"""
@@ -33,8 +44,8 @@ def send_telegram_message(registration_link, text):
     requests.get(url_txt)
     requests.get(url_registration)
 
-
-while True:
+# Create an event handler
+def start_monitoring():
     for duyuru in announcement_list:
         rows = duyuru.findAll('tr')
         for i in rows[:5]:
@@ -47,7 +58,33 @@ while True:
                     print(registration_link)
                     print(x.string)
                     send_telegram_message(registration_link, text)
+                    textArea.insert(tk.END, registration_link)
+                    textArea.insert(tk.END, text)
+                    #this creates a new label to the GUI
+
                 else:
+                    textArea.insert(tk.END, "There is no new announcement "+ str(datetime.now()) + '\n')
+                    
                     print( "There is no new announcement "+ str(datetime.now()))
-    time.sleep(120)
-    continue
+
+    # re-run the function in every 2 minutes
+    window.after(120000, start_monitoring)
+
+Button1 = tk.Button(window, text ="Start Monitoring", command = start_monitoring, bg='black', fg='white')
+Button1.pack()
+
+textArea = tk.Text(window, width=60, height=20, background="yellow")
+textArea.grid(row=2, column=0)
+textArea.pack()
+
+scrollbar = tk.Scrollbar(window)
+scrollbar.pack(side="right", fill="y")
+
+textArea.config(yscrollcommand=scrollbar.set)
+scrollbar.config(command=textArea.yview)
+
+
+# Run the event loop
+window.mainloop()
+
+
