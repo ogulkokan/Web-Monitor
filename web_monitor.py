@@ -29,7 +29,7 @@ announcement_list = soup.findAll('table', {'class': 'arama_tablosu'})
 # Create a window object
 window = tk.Tk()
 window.title('TGF - course tracking app')
-window.iconbitmap('./assets/monitoring.ico')
+# window.iconbitmap('./assets/monitoring.ico')
 
 window.geometry('500x500')
 window.config(background = "grey")
@@ -59,8 +59,6 @@ def start_monitoring():
                     send_telegram_message(registration_link, text)
                     textArea.insert(tk.END, registration_link)
                     textArea.insert(tk.END, text)
-                    #this creates a new label to the GUI
-
                 else:
                     textArea.insert(tk.END, "There is no new announcement "+ str(datetime.now()) + '\n')
                     
